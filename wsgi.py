@@ -15,7 +15,7 @@ def proxy(path):
     redirection = "%s%s" % (TARGET,path)
     print(redirection)
     user = os.environ['USER']
-    password = os.envion["PASS"]
+    password = os.environ["PASS"]
     return get(redirection,auth=(user,password)).content
 
 if __name__ == "__main__":
