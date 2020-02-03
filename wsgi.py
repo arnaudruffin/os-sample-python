@@ -10,7 +10,7 @@ TARGET="https://plazza.orange.com/api/"
 def hello():
     return "Hello You!"
 
-@application.route("/api/<path: path>", methods=["GET"])
+@application.route("/api/<path:path>", methods=["GET"])
 def proxy(path):
     redirection = "%s%s" % (TARGET,path)
     println(redirection)
