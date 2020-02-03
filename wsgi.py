@@ -13,7 +13,7 @@ def hello():
 @application.route("/api/<path:path>", methods=["GET"])
 def proxy(path):
     redirection = "%s%s" % (TARGET,path)
-    println(redirection)
+    print(redirection)
     user = os.environ['USER']
     password = os.envion["PASS"]
     return get(redirection,auth=(user,password)).content
