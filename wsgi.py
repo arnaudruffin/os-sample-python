@@ -10,6 +10,10 @@ TARGET="https://plazza.orange.com/api/"
 def hello():
     return "Hello You!"
 
+@application.route("/api/<path:path>", methods=["OPTIONS"])
+def hande_preflight(path):
+    return "You rule, preflight!"
+
 @application.route("/api/<path:path>", methods=["GET"])
 def proxy(path):
     url = "%s%s?%s" % (TARGET,path,request.query_string.decode("utf-8"))
