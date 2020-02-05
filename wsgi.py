@@ -50,7 +50,7 @@ method_requests_mapping = {
 
 @application.route("/api/<path:path>", methods=method_requests_mapping.keys())
 def proxy(path):
-    url = "%s%s?%s" % (TARGET,path,request.query_string.decode("utf-8"))
+    url = "%s%s" % (TARGET,path)
     print(url)
     print(request.query_string)
     user = os.environ['USER']
