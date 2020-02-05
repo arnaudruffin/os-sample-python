@@ -1,8 +1,8 @@
-from flask import Flask, abort, Response, request
+import flask
 import requests 
 import os
 
-application = Flask(__name__)
+application = flask.Flask(__name__)
 
 TARGET="https://plazza.orange.com/api/"
 
@@ -50,9 +50,9 @@ method_requests_mapping = {
 
 @application.route("/api/<path:path>", methods=method_requests_mapping.keys())
 def proxy(path):
-    url = "%s%s" % (TARGET,path)
+    url = "%s%s?%s" % (TARGET,path,flask.request.query_string.decode("utf-8"))
     print(url)
-    print(request.query_string)
+    print(flask.request.query_string)
     user = os.environ['USER']
     password = os.environ["PASS"]
     headers = {
@@ -63,11 +63,14 @@ def proxy(path):
     }
 
     requests_function = method_requests_mapping[flask.request.method]
-    request = requests_function(url, auth=(user, password), headers=headers, stream=True, params=flask.request.args)
-    response = flask.Response(flask.stream_with_context(request.iter_content()),
-                              content_type=request.headers['content-type'],
-                              status=request.status_code)
+    #, params=flask.request.args
+    rq = requests_function(url, auth=(user, password), headers=headers, stream=True)
+    response = flask.Response(flask.stream_with_context(rq.iter_content()),
+                              content_type=rq.headers['content-type'],
+                              status=rq.status_code)
     response.headers['Access-Control-Allow-Origin'] = '*'
+    print(rq.url)
+    print(response)
     return response
 
 if __name__ == "__main__":
